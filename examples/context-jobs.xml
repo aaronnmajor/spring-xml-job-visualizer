@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- Data Extraction Tasklet -->
+    <bean id="dataExtractionTasklet" class="com.example.batch.tasklet.DataExtractionTasklet">
+        <property name="source" value="database"/>
+    </bean>
+
+    <!-- Data Extraction Step -->
+    <bean id="extractDataStep" class="org.springframework.batch.core.Step">
+        <property name="tasklet" ref="dataExtractionTasklet"/>
+    </bean>
+
+    <!-- Data Validation Step -->
+    <bean id="validateDataStep" class="org.springframework.batch.core.Step">
+        <property name="previous" ref="extractDataStep"/>
+    </bean>
+
+    <!-- Data Transformation Step -->
+    <bean id="transformDataStep" class="org.springframework.batch.core.Step">
+        <property name="previous" ref="validateDataStep"/>
+    </bean>
+
+    <!-- Data Load Step -->
+    <bean id="loadDataStep" class="org.springframework.batch.core.Step">
+        <property name="previous" ref="transformDataStep"/>
+    </bean>
+
+    <!-- ETL Job -->
+    <bean id="etlJob" class="org.springframework.batch.core.Job">
+        <property name="steps" ref="loadDataStep"/>
+    </bean>
+
+</beans>

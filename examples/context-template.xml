@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- Template Job Configuration -->
+    
+    <!-- Initial Setup Tasklet -->
+    <bean id="setupTasklet" class="com.example.batch.template.SetupTasklet"/>
+    
+    <bean id="setupStep" class="org.springframework.batch.core.Step">
+        <property name="tasklet" ref="setupTasklet"/>
+    </bean>
+
+    <!-- Processing Step -->
+    <bean id="processStep" class="org.springframework.batch.core.Step">
+        <property name="dependency" ref="setupStep"/>
+    </bean>
+
+    <!-- Cleanup Step -->
+    <bean id="cleanupStep" class="org.springframework.batch.core.Step">
+        <property name="dependency" ref="processStep"/>
+    </bean>
+
+    <!-- Template Job -->
+    <bean id="templateJob" class="org.springframework.batch.core.Job">
+        <constructor-arg ref="cleanupStep"/>
+    </bean>
+
+</beans>
