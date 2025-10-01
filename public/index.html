@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring XML Job Visualizer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔄 Spring XML Job Visualizer</h1>
+            <p class="subtitle">Visualize your Spring Batch job dependencies as a DAG</p>
+        </header>
+
+        <div class="input-section">
+            <div class="tabs">
+                <button class="tab-button active" data-tab="xml-input">Paste XML</button>
+                <button class="tab-button" data-tab="examples">Examples</button>
+            </div>
+
+            <div id="xml-input" class="tab-content active">
+                <textarea id="xmlInput" placeholder="Paste your Spring XML configuration here (context-jobs.xml, context-template.xml, or context-jobs-custom.xml)..."></textarea>
+                <button id="visualizeBtn" class="btn-primary">Visualize DAG</button>
+            </div>
+
+            <div id="examples" class="tab-content">
+                <div class="example-buttons">
+                    <button class="btn-secondary" data-example="simple">Simple Job</button>
+                    <button class="btn-secondary" data-example="complex">Complex Pipeline</button>
+                    <button class="btn-secondary" data-example="custom">Custom Jobs</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="error-message" class="error-message"></div>
+
+        <div id="results" class="results-section" style="display: none;">
+            <div class="info-panel">
+                <div class="info-card">
+                    <h3>Jobs Found</h3>
+                    <p id="jobCount" class="stat-value">0</p>
+                </div>
+                <div class="info-card">
+                    <h3>Execution Order</h3>
+                    <p id="hasOrder" class="stat-value">-</p>
+                </div>
+                <div class="info-card">
+                    <h3>Pipeline Levels</h3>
+                    <p id="levelCount" class="stat-value">0</p>
+                </div>
+            </div>
+
+            <div id="cycleWarning" class="warning" style="display: none;">
+                <strong>⚠️ Cycle Detected!</strong>
+                <p id="cycleDetails"></p>
+            </div>
+
+            <div class="visualization-panel">
+                <h2>📊 Job Execution Pipeline</h2>
+                <div id="dagVisualization" class="dag-container"></div>
+            </div>
+
+            <div class="details-panel">
+                <h2>📋 Job Details</h2>
+                <div id="jobDetails"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "name": "spring-xml-job-visualizer",
+  "version": "1.0.0",
+  "description": "Parses Spring XML job configurations and generates a DAG visualization",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "keywords": ["spring", "xml", "dag", "visualization", "jobs"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "xml2js": "^0.6.2"
+  }
+}

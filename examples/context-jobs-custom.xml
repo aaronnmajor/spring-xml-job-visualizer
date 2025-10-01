@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- Custom Job Configuration -->
+    
+    <!-- File Reader Tasklet -->
+    <bean id="fileReaderTasklet" class="com.example.custom.FileReaderTasklet">
+        <property name="inputPath" value="/data/input"/>
+    </bean>
+    
+    <bean id="readFilesStep" class="org.springframework.batch.core.Step">
+        <property name="tasklet" ref="fileReaderTasklet"/>
+    </bean>
+
+    <!-- Parallel Processing Steps -->
+    <bean id="processTypeAStep" class="org.springframework.batch.core.Step">
+        <property name="previous" ref="readFilesStep"/>
+    </bean>
+
+    <bean id="processTypeBStep" class="org.springframework.batch.core.Step">
+        <property name="previous" ref="readFilesStep"/>
+    </bean>
+
+    <!-- Merge Results Step -->
+    <bean id="mergeResultsStep" class="org.springframework.batch.core.Step">
+        <property name="dependency" ref="processTypeAStep"/>
+        <property name="dependency2" ref="processTypeBStep"/>
+    </bean>
+
+    <!-- Generate Report Step -->
+    <bean id="generateReportStep" class="org.springframework.batch.core.Step">
+        <property name="previous" ref="mergeResultsStep"/>
+    </bean>
+
+    <!-- Custom Batch Job -->
+    <bean id="customBatchJob" class="org.springframework.batch.core.Job">
+        <constructor-arg ref="generateReportStep"/>
+    </bean>
+
+</beans>
